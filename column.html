@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>D3-example by hellojinjie</title>
+
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  </head>
+  <body>
+    <div class="wrapper">
+    </div>
+    <script type="text/javascript">
+      var data = [142, 244, 222, 232, 169, 131, 342];
+      var height = 300;
+      var width = 500;
+      var columnSpan = width / (data.length * 2 + 1);
+      
+      var svg = d3.select('.wrapper').append("svg").append('g')
+        .attr('height', 300)
+        .attr('width', 500)
+        .attr('fill', 'grey');
+      
+      svg.selectAll('rect').data(data).enter().append('rect')
+        .attr('fill', 'pink')
+        .attr('height', function(value, index) {return value;})
+        .attr('width', columnSpan)
+        .attr('x', function(value, index) {return index * columnSpan * 2 + columnSpan;})
+        .attr('y', function(value) {return height - value;});
+    </script>
+  </body>
+  </html>
