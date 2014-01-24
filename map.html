@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style type="text/css">
+    body {
+      display: block;
+      margin: 0px;
+      overflow: hidden;
+      padding: 0px;
+    }
+  </style>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+  <script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
+</head>
+<body>
+  <div id="container"></div>
+  <svg>
+    <radialGradient id="tip">
+      <stop offset="0" stop-color="white"/>
+      <stop offset="0.2" stop-color="pink"/>
+      <stop offset="1" stop-color="white"/>
+    </radialGradient>
+  </svg>
+  <script type="text/javascript">
+    var height = window.innerHeight;
+    var width = window.innerWidth;
+    var svg = d3.select('#container').append('svg').append('g');
+
+    d3.json("/world-countries.json", function(data) {
+      /* Antarctica will not shown on the map */
+      var features = _.filter(data.features, function(value, key) {
+        return value.properties.name != 'Antarctica';
+      });
+
+      var projection = d3.geo.mercator();
+      var oldScala = projection.scale();
+      var oldTranslate = projection.translate();
+
+      xy = projection.scale(oldScala * (width / oldTranslate[0] / 2) * 0.9)
+        .translate([width / 2, height / 2]);
+      
+      path = d3.geo.path().projection(xy);
+
+      svg.attr('width', width).attr('height', height);
+      svg.selectAll('path').data(features).enter().append('svg:path')
+        .attr('d', path)
+        .on('mouseover', function(data) {
+          d3.select(this).attr('fill', 'rgba(2,2,139,0.61)');
+        })
+        .on('mouseout', function(data) {
+          d3.select(this).attr('fill', 'rgba(128,124,139,0.61');
+        })
+        .attr('fill', 'rgba(128,124,139,0.61)')
+        .attr('stroke', 'rgba(255,255,255,1)')
+        .attr('stroke-width', 1);
+      
+      var myLocation = xy([121.3997, 31.0456]);
+      svg.append('circle').attr('r', 15)
+        .attr('fill', 'url(#tip)')
+        .attr('transform', 'translate(' + myLocation[0] + ', ' + myLocation[1] + ')');
+    });
+  </script>
+</body>
+</html>
