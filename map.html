@@ -27,7 +27,7 @@
     var width = window.innerWidth;
     var svg = d3.select('#container').append('svg').append('g');
 
-    d3.json("/world-countries.json", function(data) {
+    d3.json("world-countries.json", function(data) {
       /* Antarctica will not shown on the map */
       var features = _.filter(data.features, function(value, key) {
         return value.properties.name != 'Antarctica';
