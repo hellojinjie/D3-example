@@ -25,7 +25,7 @@
   <script type="text/javascript">
     var height = window.innerHeight;
     var width = window.innerWidth;
-    var svg = d3.select('#container').append('svg').append('g');
+    var svg = d3.select('#container').append('svg');
 
     d3.json("world-countries.json", function(data) {
       /* Antarctica will not shown on the map */
